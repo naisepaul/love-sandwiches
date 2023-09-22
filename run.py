@@ -24,7 +24,7 @@ def get_sales_data():
         print("please enter sales data from the last market")
         print("Data should be six numbers, seperated by comas.")
         print("example :10, 20, 30, 40, 50,60\n")
-        data_str = input("Enter the data here :") 
+        data_str = input("Enter the data here :")
         sales_data = data_str.split(',')
         if validate_data(sales_data):
             print('data is valid')
@@ -68,7 +68,7 @@ def calculate_suplus_data(sales_row):
     - Negative surplus indicates extra made when stock was sold out.
     """
     print("Calculating surplus data...\n")
-    stock = SHEET.worksheet("stock").get_all_values()    
+    stock = SHEET.worksheet("stock").get_all_values()
     stock_row = stock[-1]
 
     surplus_data = []
@@ -78,16 +78,31 @@ def calculate_suplus_data(sales_row):
     return surplus_data
 
 
+def get_last_5_entries_sales():
+    """
+    Collects collumns of data from sales worksheet,
+    collecting the last 5 entries for each sandwich
+    and return the data as alist od lists
+    """
+    sales = SHEET.worksheet("sales")
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    return columns
+
+
 def main():
     """
      Run all program functions
     """
-    data = get_sales_data()   
+    data = get_sales_data()
     sales_data = [int(num) for num in data]
     update_worksheet(sales_data, "sales")
     new_surplus_data = calculate_suplus_data(sales_data)
     update_worksheet(new_surplus_data, "surplus")
 
 
-print("welcome to love sandwiches Data \n")
-main()
+print("welcome to love sandwiches Data  Automation\n")
+# main()
+sales_columns = get_last_5_entries_sales()
